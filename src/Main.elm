@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Html exposing (text)
 import Json.Decode exposing (..)
+import Json.Decode.Extra exposing (parseInt)
 
 
 type Membership
@@ -25,7 +26,7 @@ type alias User =
 json =
     """
 {
-  "id" : 123,
+  "id" : "321",
   "email" : "Joe@domain.net",
   "isPremium" : true,
   "gender": "male"
@@ -35,7 +36,7 @@ json =
 
 userDecoder =
     map4 User
-        (field "id" int)
+        (field "id" parseInt)
         (field "email" (string |> map String.toLower))
         (field "isPremium" membership)
         (field "gender" gender)
