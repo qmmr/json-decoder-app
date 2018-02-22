@@ -15,12 +15,16 @@ type Gender
     | Male
 
 
+type alias Notification =
+    { title : String, message : String }
+
+
 type alias User =
     { id : Int
     , email : String
     , membership : Membership
     , gender : Maybe Gender
-    , notifications : List String
+    , notifications : List Notification
     }
 
 
@@ -31,7 +35,10 @@ json =
   "email" : "Joe@doe.xyz",
   "isPremium" : true,
   "gender": "male",
-  "notifications": ["Welcome back!", "How are you today?", "Good to see you!"]
+  "notifications": [
+    { "title": "Welcome back!", "message": "How are you today?" },
+    { "title": "Aloha!", "message": "Good to see you!" }
+  ]
 }
 """
 
@@ -42,7 +49,14 @@ userDecoder =
         (field "email" (string |> map String.toLower))
         (field "isPremium" membership)
         (maybe (field "gender" gender))
-        (field "notifications" (list string))
+        (field "notifications" (list notification))
+
+
+notification : Decoder Notification
+notification =
+    map2 Notification
+        (field "title" string)
+        (field "message" string)
 
 
 gender : Decoder Gender
