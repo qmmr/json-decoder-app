@@ -28,8 +28,7 @@ json =
 {
   "id" : "321",
   "email" : "Joe@doe.xyz",
-  "isPremium" : true,
-  "gender": null
+  "isPremium" : true
 }
 """
 
@@ -39,7 +38,7 @@ userDecoder =
         (field "id" parseInt)
         (field "email" (string |> map String.toLower))
         (field "isPremium" membership)
-        (field "gender" (nullable gender))
+        (maybe (field "gender" gender))
 
 
 gender : Decoder Gender
