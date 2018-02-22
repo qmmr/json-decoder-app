@@ -20,6 +20,7 @@ type alias User =
     , email : String
     , membership : Membership
     , gender : Maybe Gender
+    , notifications : List String
     }
 
 
@@ -28,17 +29,20 @@ json =
 {
   "id" : "321",
   "email" : "Joe@doe.xyz",
-  "isPremium" : true
+  "isPremium" : true,
+  "gender": "male",
+  "notifications": ["Welcome back!", "How are you today?", "Good to see you!"]
 }
 """
 
 
 userDecoder =
-    map4 User
+    map5 User
         (field "id" parseInt)
         (field "email" (string |> map String.toLower))
         (field "isPremium" membership)
         (maybe (field "gender" gender))
+        (field "notifications" (list string))
 
 
 gender : Decoder Gender
